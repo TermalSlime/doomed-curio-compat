@@ -1,0 +1,11 @@
+{
+  "package": "net.termalslime.doomed_curio.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "ArmorReductionMixin",
+    "TemperatureHandlerMixin"
+  ],
+  "mixinextras": {
+    "minVersion": "0.5.5"
+  }
+}
