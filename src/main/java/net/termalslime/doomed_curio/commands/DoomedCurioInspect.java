@@ -4,7 +4,9 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.LiteralMessage;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import net.mattlives.doomedmatu.body.ArmorReduction;
 import net.mattlives.doomedmatu.body.BodyPart;
+import net.mattlives.doomedmatu.capability.DoomedData;
 import net.mattlives.doomedmatu.capability.DoomedDataUtil;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,6 +19,8 @@ import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.termalslime.doomed_curio.DoomedCurio;
+import net.termalslime.doomed_curio.helpers.CurioStatsCalculator;
+import net.termalslime.doomed_curio.mixin.TemperatureHandlerMixin;
 
 @Mod.EventBusSubscriber(modid = DoomedCurio.MODID)
 public class DoomedCurioInspect {
@@ -43,9 +47,9 @@ public class DoomedCurioInspect {
         DoomedDataUtil.get(player).ifPresent( data -> {
 
             for (BodyPart part : BodyPart.VALUES) {
-                sendChatMessage(source, "part: " + part.displayName() + " - " + data.getWearables().armorFor(part));
+                sendChatMessage(source, "part: " + part.displayName() + " - " + ArmorReduction.partProtection(player, data, part));
             }
-            sendChatMessage(source, "isolation: " + data.getWearables().totalIsolation());
+            sendChatMessage(source, "isolation: " + (data.getWearables().totalIsolation() + CurioStatsCalculator.calculateInsulation(player)));
         });
         return 1;
     }
